@@ -3,12 +3,19 @@ import pickle
 import pandas as pd
 import requests
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+tmdb_api_key = os.getenv("TMDB_API_KEY")
+
+
 movies_list=pickle.load(open('movies.pkl','rb'))
 movies_title=movies_list['title'].values
 similarity=pickle.load(open('similarity.pkl','rb'))
 
+
 def fetch_poster(movie_id):
-    url = "https://api.themoviedb.org/3/movie/{}?api_key=8265bd1679663a7ea12ac168da84d2e8&language=en-US".format(movie_id)
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={tmdb_api_key}&language=en-US"
     data = requests.get(url)
     data = data.json()
     poster_path = data['poster_path']
